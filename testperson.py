@@ -1,40 +1,44 @@
-from person import Person
+'''tests for person.py '''
 import unittest
 import io
 import sys
+from person import Person
 
 class TestPerson(unittest.TestCase):
+    '''tests for person  '''
+    person1 = Person('radhika', 'balotra', ['student',])
 
-	p1 = Person('radhika', 'balotra', ['student',])
+    def testshow(self):
+        ''' checks output when person is initialised with all params '''
+        text = io.StringIO()
+        sys.stdout = text
 
-	def test_personWithAllParam_show(self):
-		text = io.StringIO()
-		sys.stdout = text
+        self.person1.show()
+        sys.stdout = sys.__stdout__
 
-		self.p1.show()
-		sys.stdout = sys.__stdout__
+        self.assertEqual(text.getvalue(), 'My name is radhika and my current city is balotra\n')
 
-		self.assertEqual(text.getvalue(), 'My name is radhika and my current city is balotra\n')
+    def testwork(self):
+        ''' checks if work param takes expected value when passed'''
+        self.assertEqual(self.person1.work, ['student'])
 
-	def test_personWithAllParam_work(self):
-		self.assertEqual(self.p1.work, ['student'])
+    person2 = Person('radhika')
 
-	p2 = Person('radhika', 'balotra')
+    def testnoWork(self):
+        ''' if no work param passed checks for it not being initialised '''
+        try:
+            self.person2.work
+        except AttributeError:
+            pass
 
-	def test_PersonwithnoWorkParam(self):
-		try:
-			self.p2.work
-		except AttributeError:
-			pass
+    def testnocity(self):
+        ''' checks if city takes its default when value when no param other than name is passed '''
+        text = io.StringIO()
+        sys.stdout = text
 
-	p3 = Person('radhika')
-	def test_personwithonlynameparam(self):
-		text = io.StringIO()
-		sys.stdout = text
-
-		self.p3.show()
-		sys.stdout = sys.__stdout__
-		self.assertEqual(text.getvalue(), 'My name is radhika and my current city is Roorkee\n')
+        self.person2.show()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(text.getvalue(), 'My name is radhika and my current city is Roorkee\n')
 
 if __name__ == '__main__':
     unittest.main()
