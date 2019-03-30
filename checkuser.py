@@ -14,7 +14,7 @@ def my_decorator(func):
         # print(args)
         # print(config.users)
 
-        config.cursor.execute(f"SELECT username FROM users WHERE username={args[0]}")
+        config.cursor.execute(f"SELECT username FROM users WHERE username=\'{args[0]}\'")
         users = config.cursor.fetchall()
         if bool(users):
             func(args[0])
